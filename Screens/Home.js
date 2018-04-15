@@ -15,25 +15,25 @@ class Home extends React.Component
     return (
       <View style={styles.container}>
         <Text style={styles.head}>
-        <Text>WHAT DO YOU MEME</Text>
+        <Text>What Do You Meme</Text>
         </Text>
         <Button 
             onPress={() => {
                 Actions.signin();
             }}
           title="Sign in"
-          color="#841584"
+          color="#FF0066"
         />
         <Button
             onPress={() => {
                 Actions.signup();
             }}
           title="Sign up"
-          color="#841584"
+          color="#FF0066"
         />
         <Button 
           title="Play as guest"
-          color="#841584"
+          color="#FF0066"
         />
       </View>
     );
@@ -46,11 +46,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
+      backgroundColor: '#2b2b2b',
+      fontFamily:'AppleSDGothicNeo-Thin',
   },
   head: {
     fontSize: 30,
-    color: '#F1C40F',
-    fontFamily: 'Arial',
+    color: '#00FFC8',
+    fontFamily: 'AppleSDGothicNeo-Bold',
     marginTop: -300,
     marginBottom: 50,
   },

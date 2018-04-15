@@ -15,20 +15,20 @@ class Signin extends React.Component {
         password: '',
     };
 
-    checkUsername = () => {
-        fetch('http://localhost:8080/signin?username=' + this.state.username + "&password=" + this.state.password)
-            .then((res) => res.json())
-            .then((data) => {
-                // data = {"message":"validUsername"}
-                if (data.message = "validUsername") {
-                    Alert.alert("yo");
-                } else {
-                    this.state.errorMessage = "Invalid username"
-                    Alert.alert("no");
-                }
-                // data contains json object
-            })
-    }
+    // checkUsername = () => {
+    //     fetch('http://localhost:8080/signin?username=' + this.state.username + "&password=" + this.state.password)
+    //         .then((res) => res.json())
+    //         .then((data) => {
+    //             // data = {"message":"validUsername"}
+    //             if (data.message = "validUsername") {
+    //                 Alert.alert("yo");
+    //             } else {
+    //                 this.state.errorMessage = "Invalid username"
+    //                 Alert.alert("no");
+    //             }
+    //             // data contains json object
+    //         })
+    // }
 
     render() {
         return (
@@ -65,9 +65,15 @@ class Signin extends React.Component {
                 />
 
                 <Button
-                    onPress={this.checkUsername()}
-                    title="Sign in"
-                    color="#841584"
+                    //onPress={this.checkUsername()}
+                    onPress={() => {
+                        Actions.gamemenu({
+                            username: this.state.username,
+                            password: this.state.password,
+                        });
+                    }}
+                    title="Sign-in"
+                    color="white"
                 />
             </View>
         );
@@ -80,20 +86,20 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: '#2b2b2b',
     },
-    // title: {
-    //     fontSize: 30,
-    //     color: '#F1C40F',
-    //     fontFamily: 'Arial',
-    //     marginTop: -300,
-    //     marginBottom: 10,
-    // },
+    title: {
+        fontSize: 20,
+        color: '#FFB300',
+        fontFamily: 'AppleSDGothicNeo-Regular',
+    },
     nameInput: {
         height: 40,
         borderWidth: 2,
         borderColor: 'black',
         margin: 20,
         width: 200,
+        color:"white",
     }
 });
 
