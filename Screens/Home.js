@@ -6,6 +6,7 @@ import {
     StyleSheet,
     Button
 }from 'react-native';
+
 import {Actions} from "react-native-router-flux";
 
 class Home extends React.Component
@@ -17,14 +18,16 @@ class Home extends React.Component
         <Text>WHAT DO YOU MEME</Text>
         </Text>
         <Button 
-          //onPress={this.signinButton}
             onPress={() => {
                 Actions.signin();
             }}
           title="Sign in"
           color="#841584"
         />
-        <Button 
+        <Button
+            onPress={() => {
+                Actions.signup();
+            }}
           title="Sign up"
           color="#841584"
         />

@@ -7,9 +7,10 @@ import {
     Button,
     TextInput,
 }from 'react-native';
+import {Actions} from "react-native-router-flux";
 
 
-class Signin extends React.Component
+class Signup extends React.Component
 {
     state = {
         username: '',
@@ -51,9 +52,9 @@ class Signin extends React.Component
 
                 <Button
                     onPress={() => {
-                        alert(this.state.username)
+                        Actions.gamemenu();
                     }}
-                    title="Next"
+                    title="Sign up"
                     color="#841584"
                 />
             </View>
@@ -68,13 +69,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    // title: {
-    //     fontSize: 30,
-    //     color: '#F1C40F',
-    //     fontFamily: 'Arial',
-    //     marginTop: -300,
-    //     marginBottom: 10,
-    // },
     nameInput: {
         height: 40,
         borderWidth: 2,
@@ -84,4 +78,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Signin;
+export default Signup;
