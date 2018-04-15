@@ -8,6 +8,7 @@ import {
     TextInput,
     Image,
     AppRegistry,
+    Alert,
 }from 'react-native';
 import {Actions} from "react-native-router-flux";
 
@@ -17,7 +18,28 @@ class Signup extends React.Component
     state = {
         username: '',
         password: '',
+        newUser: 'yes',
     };
+
+
+    checkUsername = () => {
+        fetch('http://localhost:8080/WDYM/Signin?username=' + this.state.username + "&password=" + this.state.password + "&newUser=" + this.state.newUser)
+            .then((res) => res.json())
+            .then((data) => {
+
+                if (JSON.stringify(data) =='"Added"') {
+                         Actions.gamemenu({
+                            username: this.state.username,
+                            password: this.state.password,
+                        });                
+                     } else if(JSON.stringify(data) == '"UsernameTaken"') {
+                    this.state.errorMessage = '"Username Taken"'
+                }
+                // data contains json object
+            })
+    }
+
+
     render() {
         return (
 
@@ -57,7 +79,7 @@ class Signup extends React.Component
 
                 <Button
                     onPress={() => {
-                        Actions.gamemenu();
+                        {this.checkUsername()}
                     }}
                     title="Sign up"
                     color="white"
@@ -90,6 +112,7 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         margin: 20,
         width: 200,
+        color:"white",
     }
 });
 

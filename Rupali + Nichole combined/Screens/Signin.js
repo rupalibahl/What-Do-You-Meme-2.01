@@ -6,6 +6,7 @@ import {
     StyleSheet,
     Button,
     TextInput,
+    Alert,
 } from 'react-native';
 import {Actions} from "react-native-router-flux";
 
@@ -13,22 +14,24 @@ class Signin extends React.Component {
     state = {
         username: '',
         password: '',
+        newUser: 'no',
     };
 
-    // checkUsername = () => {
-    //     fetch('http://localhost:8080/signin?username=' + this.state.username + "&password=" + this.state.password)
-    //         .then((res) => res.json())
-    //         .then((data) => {
-    //             // data = {"message":"validUsername"}
-    //             if (data.message = "validUsername") {
-    //                 Alert.alert("yo");
-    //             } else {
-    //                 this.state.errorMessage = "Invalid username"
-    //                 Alert.alert("no");
-    //             }
-    //             // data contains json object
-    //         })
-    // }
+    checkUsername = () => {
+        fetch('http://localhost:8080/WDYM/Signin?username=' + this.state.username + "&password=" + this.state.password + "&newUser=" + this.state.newUser)
+            .then((res) => res.json())
+            .then((data) => {
+
+                if (JSON.stringify(data) =='"validUsername"') {
+                         Actions.gamemenu({
+                            username: this.state.username,
+                        });                
+                     } else if(JSON.stringify(data) == '"InvalidUsername"') {
+                    this.state.errorMessage = '"Invalid username"'
+                }
+                // data contains json object
+            })
+    }
 
     render() {
         return (
@@ -65,12 +68,9 @@ class Signin extends React.Component {
                 />
 
                 <Button
-                    //onPress={this.checkUsername()}
                     onPress={() => {
-                        Actions.gamemenu({
-                            username: this.state.username,
-                            password: this.state.password,
-                        });
+                        {this.checkUsername()}
+   
                     }}
                     title="Sign-in"
                     color="white"

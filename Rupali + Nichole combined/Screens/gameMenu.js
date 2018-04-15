@@ -16,7 +16,12 @@ class gameMenu extends React.Component
                 <Button
                     //onPress={this.signinButton}
                     onPress={() => {
-                        Actions.gamestart();
+                        Actions.gamestart({
+                            username: this.props.username,
+
+                        })
+
+                        
                     }}
                     title="Start a game"
                     color="#B0FF05"
@@ -33,7 +38,7 @@ class gameMenu extends React.Component
                     color="#B0FF05"
                 />
                 <Button
-                    title="Uplaod memes"
+                    title="Upload memes"
                     color='#708D91'
                     //fontSize= '10',
                 />
