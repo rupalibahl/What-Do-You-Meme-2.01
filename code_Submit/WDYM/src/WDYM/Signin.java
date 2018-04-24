@@ -50,6 +50,9 @@ public class Signin extends HttpServlet {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String whatfunction = request.getParameter("servlet");
+		String winner = request.getParameter("winner");
+		String card = request.getParameter("card");
+
 		String isNewUser= "";
 		isNewUser = request.getParameter("newUser");
 
@@ -65,10 +68,93 @@ public class Signin extends HttpServlet {
 		else if(whatfunction.equals("waiting")) {
 			waiting(out, username);
 		}
-
+		else if(whatfunction.equals("result")){
+			result(out,winner);
+		}
+		else if(whatfunction.equals("end")){
+			end(out);
+		}
+		else if(whatfunction.equals("playerCards")){
+			addPlayerCards(out,card);
+		}
+		else if(whatfunction.equals("judgePicked")){
+			judgePicked(out);
+			
+		}else if(whatfunction.equals("playerPicked")){
+			playerPicked(out);
+		}
+		else if(whatfunction.equals("getmeme")){
+			getmeme(out);
+		}
 
 		
+	}
+	
+	//when players wait for judge to press stack/ your meme and signal the players (show meme cards on their page)
+	public void getmeme(PrintWriter out)
+	{
+		
+	}
+	
+	//when players wait for judge to pick the winner, after judge picks winner, signal players
+	public void judgePicked(PrintWriter out)
+	{
+		
+	}
+	
+	//when judge wait for players to pick caption cards, after players pick, signal judge
+	public void playerPicked(PrintWriter out)
+	{
+		
+	}
+	//add chosen captions from the player to each game's card deck
+	public void addPlayerCards(PrintWriter out, String card)
+	{
+		
+		System.out.println("in add playercards");
+		sendMessage("addcards");
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		String js = gson.toJson(card);
+		System.out.println("add playercards js : " +js);
+		out.write(js);
+	
+	}
+	
+	//players use this to get the winner in the End.js
+	public void end(PrintWriter out)
+	{
+		System.out.println("in end");
+		
+		try {
+		//get the game winner string
+		sendMessage("getWinner");
+		String msg1 = (String) ois.readObject();
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		String js = gson.toJson(msg1);
+		System.out.println("end js : " +js);
+		out.write(js);
+		
+		}catch(IOException ioe){
+			System.out.println("ioe in end(): " + ioe.getMessage());
+		}catch(ClassNotFoundException cnfe) {
+			System.out.println("cnfe in end(): " + cnfe.getMessage());
+		}
 
+	}
+	
+	//Judge use this to set winner of the game in Judge2.js
+	public void result(PrintWriter out, String winner)
+	{
+		System.out.println("in result");
+		
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		String js = gson.toJson(winner);
+		System.out.println("result js : " +js);
+
+		out.write(js);
+		
+		//send winner to serverThread
+		sendMessage("winner"+winner);
 	}
 	
 	
@@ -173,7 +259,7 @@ public class Signin extends HttpServlet {
 	
 	public void startingGameChecker(PrintWriter out, String username) {
 		System.out.println("hi im gonna print the username again:");
-		//System.out.println(username);
+		System.out.println(username);
 		boolean isJudge;
 //		boolean isJudge = g.addPlayer(new GameServerThread(username));
 //		g.addUsername(username);
@@ -258,124 +344,123 @@ public class Signin extends HttpServlet {
 		Statement st = null; //for executing any sql command
 		PreparedStatement ps = null;
 		ResultSet rs = null; //anything that's retrieved from the database select statement. This will be a table
-//		try {
-//			Class.forName("com.mysql.jdbc.Driver");
-//			conn = DriverManager.getConnection("jdbc:mysql://localhost/WDYMUsers?user=root&password=root&useSSL=false");
-//			
-//			
-//			st = conn.createStatement();
-//			ps = conn.prepareStatement("SELECT* " + 
-//					"FROM Login;");
-//			rs=ps.executeQuery(); 
-//			while(rs.next()) { 
-//				String uname = rs.getString("username");
-//				if(username.equals(uname)) {
-//					return false;
-//				}
-//			}
-//			
-//			
-//			st = conn.createStatement();
-//			st.executeUpdate("INSERT INTO Login(username, password) " + 
-//					"VALUES ('"+username+"','"+password+"');" );
-//			ps = conn.prepareStatement("SELECT* " + 
-//					"FROM Login");
-//			rs=ps.executeQuery(); 
-//			while(rs.next()) { 
-//				String uname = rs.getString("username");
-//				String pass = rs.getString("password");
-//				
-//				System.out.println(uname + "\t" + pass );
-//			}
-//			return true;
-//		
-//		}
-//		catch (SQLException sqle) {
-//			System.out.println("sqle: " + sqle.getMessage());
-//		}
-//		catch(ClassNotFoundException cnfe) {
-//			System.out.println("cnfe in adduser: " + cnfe.getMessage());
-//		}
-//		finally {
-//			try {
-//				if(rs!=null) {
-//					rs.close();
-//				}
-//				if(st!=null) {
-//					st.close();
-//				}
-//				if(conn!=null) {
-//					conn.close();
-//				}
-//			}
-//			catch(SQLException sqle) {
-//				System.out.println("sqle: " + sqle.getMessage());
-//			}
-//		}
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/WDYMUsers?user=root&password=root&useSSL=false");
+			
+			
+			st = conn.createStatement();
+			ps = conn.prepareStatement("SELECT* " + 
+					"FROM Login;");
+			rs=ps.executeQuery(); 
+			while(rs.next()) { 
+				String uname = rs.getString("username");
+				if(username.equals(uname)) {
+					return false;
+				}
+			}
+			
+			
+			st = conn.createStatement();
+			st.executeUpdate("INSERT INTO Login(username, password) " + 
+					"VALUES ('"+username+"','"+password+"');" );
+			ps = conn.prepareStatement("SELECT* " + 
+					"FROM Login");
+			rs=ps.executeQuery(); 
+			while(rs.next()) { 
+				String uname = rs.getString("username");
+				String pass = rs.getString("password");
+				
+				System.out.println(uname + "\t" + pass );
+			}
+			return true;
+		
+		}
+		catch (SQLException sqle) {
+			System.out.println("sqle: " + sqle.getMessage());
+		}
+		catch(ClassNotFoundException cnfe) {
+			System.out.println("cnfe in adduser: " + cnfe.getMessage());
+		}
+		finally {
+			try {
+				if(rs!=null) {
+					rs.close();
+				}
+				if(st!=null) {
+					st.close();
+				}
+				if(conn!=null) {
+					conn.close();
+				}
+			}
+			catch(SQLException sqle) {
+				System.out.println("sqle: " + sqle.getMessage());
+			}
+		}
 		return true;
 		
 		}
 		
 		
 	private boolean loginUser(String username, String password) {
-//			Connection conn = null; //use this to connect to the database
-//			Statement st = null; //for executing any sql command
-//			PreparedStatement ps = null;
-//			ResultSet rs = null; //anything that's retrieved from the database select statement. This will be a table
-//			Vector<String> names = new Vector<String>();
-//			boolean loggedin=false;
-//			try {
-//				Class.forName("com.mysql.jdbc.Driver");
-//				System.out.println("hi");
-//
-//				conn = DriverManager.getConnection("jdbc:mysql://localhost/WDYMUsers?user=root&password=root&useSSL=false");
-//				st = conn.createStatement();
-//				ps = conn.prepareStatement("SELECT* " + 
-//						"FROM Login;");
-//				rs=ps.executeQuery(); 
-//				while(rs.next() && !loggedin) { 
-//					String uname = rs.getString("username");
-//					String pass = rs.getString("password");
-//					names.add(uname);
-//					if(username.equals(uname)) {
-//						if(password.equals(pass)) {
-//							System.out.println("Logging in");
-//							loggedin=true;
-//						}
-//					}
-//					
-//					System.out.println(uname + "\t" + pass );
-//			}
-//			if(!loggedin) {
-//				System.out.println("Incorrect login");
-//			}
-//		}
-//		catch (SQLException sqle) {
-//			System.out.println("sqle: " + sqle.getMessage());
-//		}
-//		catch(ClassNotFoundException cnfe) {
-//			System.out.println("cnfe in login: " + cnfe.getMessage());
-//		}
-//		finally {
-//			try {
-//				if(rs!=null) {
-//					rs.close();
-//				}
-//				if(st!=null) {
-//					st.close();
-//				}
-//				if(conn!=null) {
-//					conn.close();
-//				}
-//				return loggedin;
-//			}
-//			catch(SQLException sqle) {
-//				System.out.println("sqle: " + sqle.getMessage());
-//			}
-//			
-//		}
-		//return loggedin;
-		return true;
+			Connection conn = null; //use this to connect to the database
+			Statement st = null; //for executing any sql command
+			PreparedStatement ps = null;
+			ResultSet rs = null; //anything that's retrieved from the database select statement. This will be a table
+			Vector<String> names = new Vector<String>();
+			boolean loggedin=false;
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+				System.out.println("hi");
+
+				conn = DriverManager.getConnection("jdbc:mysql://localhost/WDYMUsers?user=root&password=root&useSSL=false");
+				st = conn.createStatement();
+				ps = conn.prepareStatement("SELECT* " + 
+						"FROM Login;");
+				rs=ps.executeQuery(); 
+				while(rs.next() && !loggedin) { 
+					String uname = rs.getString("username");
+					String pass = rs.getString("password");
+					names.add(uname);
+					if(username.equals(uname)) {
+						if(password.equals(pass)) {
+							System.out.println("Logging in");
+							loggedin=true;
+						}
+					}
+					
+					System.out.println(uname + "\t" + pass );
+			}
+			if(!loggedin) {
+				System.out.println("Incorrect login");
+			}
+		}
+		catch (SQLException sqle) {
+			System.out.println("sqle: " + sqle.getMessage());
+		}
+		catch(ClassNotFoundException cnfe) {
+			System.out.println("cnfe in login: " + cnfe.getMessage());
+		}
+		finally {
+			try {
+				if(rs!=null) {
+					rs.close();
+				}
+				if(st!=null) {
+					st.close();
+				}
+				if(conn!=null) {
+					conn.close();
+				}
+				return loggedin;
+			}
+			catch(SQLException sqle) {
+				System.out.println("sqle: " + sqle.getMessage());
+			}
+			
+		}
+		return loggedin;
 	}
 
 

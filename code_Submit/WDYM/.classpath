@@ -13,7 +13,6 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="lib" path="/Users/Rupali/Documents/CSCI201/zipsubmissions/rupaliba_CSCI201_Assignment3/WebContent/WEB-INF/lib/gson-2.1.jar"/>
-	<classpathentry kind="lib" path="/Users/Rupali/Downloads/mysql-connector-java-5.1.46.jar"/>
+	<classpathentry kind="lib" path="/Users/nicole/Downloads/books/gson-2.8.0.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
