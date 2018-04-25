@@ -297,7 +297,8 @@ public class Signin extends HttpServlet {
 			}
 
 		}
-		else if(isNewUser.equals("no")) {
+		else if(isNewUser.equals("no")) 
+		{
 			if(!loginUser(username,password)) {
 			    Gson gson = new GsonBuilder().setPrettyPrinting().create();
 				String js = gson.toJson("InvalidUsername");
@@ -459,7 +460,7 @@ public class Signin extends HttpServlet {
 			
 			st = conn.createStatement();
 			ps = conn.prepareStatement("SELECT* " + 
-					"FROM Login;");
+					"FROM LOGIN;");
 			rs=ps.executeQuery(); 
 			while(rs.next()) { 
 				String uname = rs.getString("username");
@@ -470,10 +471,10 @@ public class Signin extends HttpServlet {
 			
 			
 			st = conn.createStatement();
-			st.executeUpdate("INSERT INTO Login(username, password) " + 
+			st.executeUpdate("INSERT INTO LOGIN(username, password) " + 
 					"VALUES ('"+username+"','"+password+"');" );
 			ps = conn.prepareStatement("SELECT* " + 
-					"FROM Login");
+					"FROM LOGIN");
 			rs=ps.executeQuery(); 
 			while(rs.next()) { 
 				String uname = rs.getString("username");
@@ -511,7 +512,11 @@ public class Signin extends HttpServlet {
 		}
 		
 		
-	private boolean loginUser(String username, String password) {
+	private boolean loginUser(String username, String password) 
+	{
+		System.out.println("Does this print????");
+		System.out.println("Username: " + username);
+		System.out.println("Password: " + password);
 			Connection conn = null; //use this to connect to the database
 			Statement st = null; //for executing any sql command
 			PreparedStatement ps = null;
@@ -519,13 +524,16 @@ public class Signin extends HttpServlet {
 			Vector<String> names = new Vector<String>();
 			boolean loggedin=false;
 			try {
+				System.out.println("WTF");
 				Class.forName("com.mysql.jdbc.Driver");
 				System.out.println("hi");
 
 				conn = DriverManager.getConnection("jdbc:mysql://localhost/WDYMUsers?user=root&password=root&useSSL=false");
 				st = conn.createStatement();
+				System.out.println("Test 1");
 				ps = conn.prepareStatement("SELECT* " + 
-						"FROM Login;");
+						"FROM LOGIN;");
+				System.out.println("Test 2");
 				rs=ps.executeQuery(); 
 				while(rs.next() && !loggedin) { 
 					String uname = rs.getString("username");
